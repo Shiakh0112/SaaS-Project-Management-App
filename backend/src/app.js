@@ -23,6 +23,7 @@ app.use(helmet());
 const allowedOrigins = [
   process.env.CLIENT_URL || 'http://localhost:3000',
   'http://localhost:3000',
+  'https://saa-s-project-management-app.vercel.app',
 ];
 
 app.use(cors({

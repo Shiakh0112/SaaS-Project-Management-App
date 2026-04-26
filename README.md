@@ -14,7 +14,7 @@
 **A full-stack, production-grade SaaS Project Management platform inspired by Notion + Trello.**  
 Built with real-world architecture — JWT auth, real-time collaboration, Stripe payments, role-based access, and cloud file uploads.
 
-[Live Demo](#) · [API Docs](#api-endpoints) · [Report Bug](#) · [Request Feature](#)
+[Live Demo](https://saa-s-project-management-app.vercel.app) · [API Docs](#api-endpoints) · [Report Bug](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues) · [Request Feature](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues)
 
 </div>
 
@@ -241,8 +241,8 @@ taskflow/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/taskflow.git
-cd taskflow
+git clone https://github.com/Shiakh0112/SaaS-Project-Management-App.git
+cd SaaS-Project-Management-App
 ```
 
 ### 2. Backend Setup
@@ -318,8 +318,14 @@ OTP_EXPIRES_IN=10
 ### Frontend `.env`
 
 ```env
+# Local development
 VITE_API_URL=http://localhost:5000/api
 VITE_SOCKET_URL=http://localhost:5000
+
+# Production
+# VITE_API_URL=https://saas-project-management-app.onrender.com/api
+# VITE_SOCKET_URL=https://saas-project-management-app.onrender.com
+
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 ```
@@ -488,6 +494,14 @@ All real-time events are powered by **Socket.io** with JWT authentication on the
 
 ---
 
+## Deployment
+
+| Service | URL |
+|---------|-----|
+| Frontend (Vercel) | https://saa-s-project-management-app.vercel.app |
+| Backend (Render) | https://saas-project-management-app.onrender.com |
+| Repository | https://github.com/Shiakh0112/SaaS-Project-Management-App |
+
 ## Local Development Tips
 
 ```bash
@@ -515,7 +529,8 @@ MIT License — feel free to use this project for learning, portfolio, or as a b
 
 Built with passion by **Ashfaq Shaikh**
 
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/yourusername)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/Shiakh0112/SaaS-Project-Management-App)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-6366f1?style=flat-square&logo=vercel)](https://saa-s-project-management-app.vercel.app)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/yourusername)
 
 ⭐ **Star this repo if you found it helpful!**
