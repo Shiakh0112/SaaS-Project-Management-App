@@ -1,0 +1,731 @@
+{
+  "info": {
+    "name": "SaaS Project Management API",
+    "description": "Sare API endpoints ke test cases - Auth se lekar Subscription tak",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "BASE_URL", "value": "http://localhost:5000" },
+    { "key": "TOKEN", "value": "" },
+    { "key": "REFRESH_TOKEN", "value": "" },
+    { "key": "USER_ID", "value": "" },
+    { "key": "TEAM_ID", "value": "" },
+    { "key": "PROJECT_ID", "value": "" },
+    { "key": "BOARD_ID", "value": "" },
+    { "key": "LIST_ID", "value": "" },
+    { "key": "TASK_ID", "value": "" },
+    { "key": "NOTIFICATION_ID", "value": "" },
+    { "key": "INVITE_TOKEN", "value": "" },
+    { "key": "RESET_TOKEN", "value": "" }
+  ],
+  "item": [
+
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "1. Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/send-otp",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "3. Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/verify-otp",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "4. Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('TOKEN', res.data.accessToken);",
+                  "  pm.collectionVariables.set('REFRESH_TOKEN', res.data.refreshToken);",
+                  "  pm.collectionVariables.set('USER_ID', res.data.user._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "5. Google Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/google-login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"<google_id_token_here>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "6. Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('TOKEN', res.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/refresh-token",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "7. Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/forgot-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "8. Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/reset-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{RESET_TOKEN}}\",\n  \"password\": \"NewPass@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "9. Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/auth/logout"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "👤 User",
+      "item": [
+        {
+          "name": "1. Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/users/me"
+          }
+        },
+        {
+          "name": "2. Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/users/update-profile",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Updated Name", "type": "text" },
+                { "key": "avatar", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/users/{{USER_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "👥 Team",
+      "item": [
+        {
+          "name": "1. Create Team",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('TEAM_ID', res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Dev Team\",\n  \"description\": \"Frontend aur Backend developers\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Get My Teams",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/teams/my-teams"
+          }
+        },
+        {
+          "name": "3. Get Team By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/teams/{{TEAM_ID}}"
+          }
+        },
+        {
+          "name": "4. Invite Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/invite",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": \"{{TEAM_ID}}\",\n  \"email\": \"member@gmail.com\",\n  \"role\": \"member\"\n}"
+            }
+          }
+        },
+        {
+          "name": "5. Accept Invite",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/accept-invite",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{INVITE_TOKEN}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "6. Reject Invite",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/reject-invite",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{INVITE_TOKEN}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "7. Update Member Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/update-role",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": \"{{TEAM_ID}}\",\n  \"userId\": \"{{USER_ID}}\",\n  \"role\": \"admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "8. Remove Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/teams/remove-member",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": \"{{TEAM_ID}}\",\n  \"userId\": \"{{USER_ID}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "📁 Project",
+      "item": [
+        {
+          "name": "1. Create Project",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('PROJECT_ID', res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/projects/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My First Project\",\n  \"description\": \"Yeh mera pehla project hai\",\n  \"teamId\": \"{{TEAM_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Get All Projects",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/projects"
+          }
+        },
+        {
+          "name": "3. Get Project By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/projects/{{PROJECT_ID}}"
+          }
+        },
+        {
+          "name": "4. Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/projects/update/{{PROJECT_ID}}",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Updated Project Name", "type": "text" },
+                { "key": "description", "value": "Updated description", "type": "text" },
+                { "key": "cover", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/projects/delete/{{PROJECT_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "📋 Board",
+      "item": [
+        {
+          "name": "1. Create Board",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('BOARD_ID', res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/boards/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sprint 1\",\n  \"projectId\": \"{{PROJECT_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Get Boards By Project",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/boards/{{PROJECT_ID}}"
+          }
+        },
+        {
+          "name": "3. Update Board",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/boards/update/{{BOARD_ID}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sprint 1 - Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "4. Delete Board",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/boards/delete/{{BOARD_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "📝 List",
+      "item": [
+        {
+          "name": "1. Create List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('LIST_ID', res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/lists/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"To Do\",\n  \"boardId\": \"{{BOARD_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Update List",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/lists/update/{{LIST_ID}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"In Progress\"\n}"
+            }
+          }
+        },
+        {
+          "name": "3. Delete List",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/lists/delete/{{LIST_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "✅ Task",
+      "item": [
+        {
+          "name": "1. Create Task",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data._id) {",
+                  "  pm.collectionVariables.set('TASK_ID', res.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/tasks/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Login page banana hai\",\n  \"description\": \"JWT auth ke saath login page\",\n  \"boardId\": \"{{BOARD_ID}}\",\n  \"listId\": \"{{LIST_ID}}\",\n  \"priority\": \"high\",\n  \"dueDate\": \"2025-12-31\",\n  \"assignees\": [\"{{USER_ID}}\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Get Tasks By Board",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/tasks/{{BOARD_ID}}"
+          }
+        },
+        {
+          "name": "3. Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/tasks/update/{{TASK_ID}}",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Login page - Updated", "type": "text" },
+                { "key": "priority", "value": "medium", "type": "text" },
+                { "key": "cover", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Move Task (Change List)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/tasks/move/{{TASK_ID}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listId\": \"{{LIST_ID}}\",\n  \"position\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "5. Add Comment on Task",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/tasks/comment/{{TASK_ID}}",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "text", "value": "Yeh task complete ho gaya!", "type": "text" },
+                { "key": "attachment", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/tasks/delete/{{TASK_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "🔔 Notification",
+      "item": [
+        {
+          "name": "1. Get All Notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data[0]) {",
+                  "  pm.collectionVariables.set('NOTIFICATION_ID', res.data[0]._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/notifications"
+          }
+        },
+        {
+          "name": "2. Mark Notification As Read",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/notifications/read/{{NOTIFICATION_ID}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "💳 Subscription",
+      "item": [
+        {
+          "name": "1. Get Subscription Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/subscription/status"
+          }
+        },
+        {
+          "name": "2. Create Payment Order (Razorpay)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/subscription/create-order",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"pro\"\n}"
+            }
+          }
+        },
+        {
+          "name": "3. Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/subscription/verify-payment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_xxx\",\n  \"razorpay_payment_id\": \"pay_xxx\",\n  \"razorpay_signature\": \"<signature_here>\"\n}"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "📤 Upload",
+      "item": [
+        {
+          "name": "1. Upload File (Cloudinary)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "🏥 Health Check",
+      "item": [
+        {
+          "name": "Server Health",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/health"
+          }
+        }
+      ]
+    }
+
+  ]
+}
