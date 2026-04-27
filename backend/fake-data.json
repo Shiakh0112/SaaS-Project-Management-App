@@ -1,0 +1,314 @@
+{
+  "users": [
+    {
+      "name": "Ashfaq Shaikh",
+      "email": "ashfaq@taskflow.dev",
+      "password": "Password@123",
+      "role": "admin",
+      "subscription": { "plan": "enterprise", "status": "active" }
+    },
+    {
+      "name": "Sara Ahmed",
+      "email": "sara@taskflow.dev",
+      "password": "Password@123",
+      "role": "user",
+      "subscription": { "plan": "pro", "status": "active" }
+    },
+    {
+      "name": "Ravi Kumar",
+      "email": "ravi@taskflow.dev",
+      "password": "Password@123",
+      "role": "user",
+      "subscription": { "plan": "pro", "status": "active" }
+    },
+    {
+      "name": "Priya Sharma",
+      "email": "priya@taskflow.dev",
+      "password": "Password@123",
+      "role": "user",
+      "subscription": { "plan": "free", "status": "active" }
+    },
+    {
+      "name": "James Wilson",
+      "email": "james@taskflow.dev",
+      "password": "Password@123",
+      "role": "user",
+      "subscription": { "plan": "free", "status": "active" }
+    }
+  ],
+
+  "team": {
+    "name": "TaskFlow Engineering",
+    "description": "Core product engineering team",
+    "members": [
+      { "email": "ashfaq@taskflow.dev", "role": "owner" },
+      { "email": "sara@taskflow.dev", "role": "admin" },
+      { "email": "ravi@taskflow.dev", "role": "member" },
+      { "email": "priya@taskflow.dev", "role": "member" },
+      { "email": "james@taskflow.dev", "role": "viewer" }
+    ]
+  },
+
+  "projects": [
+    {
+      "name": "Website Redesign",
+      "description": "Complete overhaul of the marketing website",
+      "color": "#6366f1",
+      "owner": "ashfaq@taskflow.dev",
+      "members": ["ashfaq@taskflow.dev", "sara@taskflow.dev", "ravi@taskflow.dev"],
+      "status": "active",
+      "dueDate": "2025-06-30"
+    },
+    {
+      "name": "Mobile App v2.0",
+      "description": "React Native app with offline support",
+      "color": "#10b981",
+      "owner": "sara@taskflow.dev",
+      "members": ["sara@taskflow.dev", "ravi@taskflow.dev", "priya@taskflow.dev"],
+      "status": "active",
+      "dueDate": "2025-08-15"
+    },
+    {
+      "name": "API Gateway Migration",
+      "description": "Migrate from REST to GraphQL",
+      "color": "#f59e0b",
+      "owner": "ravi@taskflow.dev",
+      "members": ["ravi@taskflow.dev", "ashfaq@taskflow.dev", "james@taskflow.dev"],
+      "status": "active",
+      "dueDate": "2025-07-01"
+    }
+  ],
+
+  "boards": [
+    {
+      "name": "Sprint 1 — Design",
+      "project": "Website Redesign",
+      "createdBy": "ashfaq@taskflow.dev",
+      "background": "#6366f1"
+    },
+    {
+      "name": "Sprint 2 — Dev",
+      "project": "Website Redesign",
+      "createdBy": "ashfaq@taskflow.dev",
+      "background": "#8b5cf6"
+    },
+    {
+      "name": "Mobile Features",
+      "project": "Mobile App v2.0",
+      "createdBy": "sara@taskflow.dev",
+      "background": "#10b981"
+    },
+    {
+      "name": "API Tasks",
+      "project": "API Gateway Migration",
+      "createdBy": "ravi@taskflow.dev",
+      "background": "#f59e0b"
+    }
+  ],
+
+  "lists": [
+    { "name": "Backlog", "board": "Sprint 1 — Design", "position": 0 },
+    { "name": "In Progress", "board": "Sprint 1 — Design", "position": 1 },
+    { "name": "Review", "board": "Sprint 1 — Design", "position": 2 },
+    { "name": "Done", "board": "Sprint 1 — Design", "position": 3 },
+
+    { "name": "To Do", "board": "Sprint 2 — Dev", "position": 0 },
+    { "name": "In Progress", "board": "Sprint 2 — Dev", "position": 1 },
+    { "name": "Done", "board": "Sprint 2 — Dev", "position": 2 },
+
+    { "name": "Planned", "board": "Mobile Features", "position": 0 },
+    { "name": "In Progress", "board": "Mobile Features", "position": 1 },
+    { "name": "Testing", "board": "Mobile Features", "position": 2 },
+    { "name": "Released", "board": "Mobile Features", "position": 3 },
+
+    { "name": "To Do", "board": "API Tasks", "position": 0 },
+    { "name": "In Progress", "board": "API Tasks", "position": 1 },
+    { "name": "Done", "board": "API Tasks", "position": 2 }
+  ],
+
+  "tasks": [
+    {
+      "title": "Design homepage hero section",
+      "description": "Figma mockups with new brand colors",
+      "board": "Sprint 1 — Design",
+      "list": "Done",
+      "createdBy": "ashfaq@taskflow.dev",
+      "assignees": ["sara@taskflow.dev"],
+      "priority": "high",
+      "status": "done",
+      "dueDate": "2025-05-10",
+      "labels": [{ "name": "Design", "color": "#6366f1" }],
+      "checklist": [
+        { "title": "Desktop mockup", "isCompleted": true },
+        { "title": "Mobile mockup", "isCompleted": true }
+      ]
+    },
+    {
+      "title": "Build responsive navbar",
+      "description": "Sticky navbar with mobile hamburger menu",
+      "board": "Sprint 1 — Design",
+      "list": "In Progress",
+      "createdBy": "ashfaq@taskflow.dev",
+      "assignees": ["ravi@taskflow.dev"],
+      "priority": "high",
+      "status": "in-progress",
+      "dueDate": "2025-05-20",
+      "labels": [{ "name": "Frontend", "color": "#10b981" }],
+      "checklist": [
+        { "title": "Desktop layout", "isCompleted": true },
+        { "title": "Mobile layout", "isCompleted": false }
+      ]
+    },
+    {
+      "title": "SEO meta tags setup",
+      "description": "Add OG images and structured data",
+      "board": "Sprint 1 — Design",
+      "list": "Backlog",
+      "createdBy": "sara@taskflow.dev",
+      "assignees": ["priya@taskflow.dev"],
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": "2025-06-01",
+      "labels": [{ "name": "SEO", "color": "#f59e0b" }]
+    },
+    {
+      "title": "Google Analytics 4 integration",
+      "description": "Custom events for CTA clicks",
+      "board": "Sprint 1 — Design",
+      "list": "Review",
+      "createdBy": "ashfaq@taskflow.dev",
+      "assignees": ["ashfaq@taskflow.dev"],
+      "priority": "medium",
+      "status": "review",
+      "dueDate": "2025-05-25",
+      "labels": [{ "name": "Analytics", "color": "#ec4899" }]
+    },
+    {
+      "title": "Pricing page with plan comparison",
+      "description": "Monthly/yearly toggle with Stripe checkout",
+      "board": "Sprint 2 — Dev",
+      "list": "In Progress",
+      "createdBy": "sara@taskflow.dev",
+      "assignees": ["sara@taskflow.dev", "ravi@taskflow.dev"],
+      "priority": "urgent",
+      "status": "in-progress",
+      "dueDate": "2025-05-28",
+      "labels": [
+        { "name": "Frontend", "color": "#10b981" },
+        { "name": "Stripe", "color": "#635bff" }
+      ],
+      "checklist": [
+        { "title": "Toggle UI", "isCompleted": true },
+        { "title": "Stripe checkout", "isCompleted": false }
+      ]
+    },
+    {
+      "title": "Blog section with MDX",
+      "description": "MDX rendering with syntax highlighting",
+      "board": "Sprint 2 — Dev",
+      "list": "To Do",
+      "createdBy": "ashfaq@taskflow.dev",
+      "assignees": ["priya@taskflow.dev"],
+      "priority": "low",
+      "status": "todo",
+      "dueDate": "2025-06-20",
+      "labels": [{ "name": "Content", "color": "#14b8a6" }]
+    },
+    {
+      "title": "Offline task sync with AsyncStorage",
+      "description": "Cache tasks and sync when connection restores",
+      "board": "Mobile Features",
+      "list": "In Progress",
+      "createdBy": "sara@taskflow.dev",
+      "assignees": ["ravi@taskflow.dev"],
+      "priority": "urgent",
+      "status": "in-progress",
+      "dueDate": "2025-06-10",
+      "labels": [{ "name": "Mobile", "color": "#6366f1" }],
+      "checklist": [
+        { "title": "AsyncStorage setup", "isCompleted": true },
+        { "title": "Sync queue", "isCompleted": false }
+      ]
+    },
+    {
+      "title": "Push notifications with Firebase FCM",
+      "description": "Task assignment and due date reminders",
+      "board": "Mobile Features",
+      "list": "Testing",
+      "createdBy": "sara@taskflow.dev",
+      "assignees": ["sara@taskflow.dev", "priya@taskflow.dev"],
+      "priority": "high",
+      "status": "review",
+      "dueDate": "2025-06-05",
+      "labels": [{ "name": "Firebase", "color": "#f59e0b" }]
+    },
+    {
+      "title": "Biometric authentication",
+      "description": "Face ID / Fingerprint login",
+      "board": "Mobile Features",
+      "list": "Planned",
+      "createdBy": "priya@taskflow.dev",
+      "assignees": ["priya@taskflow.dev"],
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": "2025-07-15",
+      "labels": [{ "name": "Security", "color": "#ef4444" }]
+    },
+    {
+      "title": "App Store & Play Store submission",
+      "description": "Screenshots and v2.0 submission",
+      "board": "Mobile Features",
+      "list": "Released",
+      "createdBy": "sara@taskflow.dev",
+      "assignees": ["sara@taskflow.dev"],
+      "priority": "high",
+      "status": "done",
+      "dueDate": "2025-05-01",
+      "labels": [{ "name": "Release", "color": "#10b981" }],
+      "checklist": [
+        { "title": "App Store screenshots", "isCompleted": true },
+        { "title": "Play Store listing", "isCompleted": true }
+      ]
+    },
+    {
+      "title": "GraphQL schema design",
+      "description": "Types, queries, mutations for core entities",
+      "board": "API Tasks",
+      "list": "Done",
+      "createdBy": "ravi@taskflow.dev",
+      "assignees": ["ravi@taskflow.dev", "ashfaq@taskflow.dev"],
+      "priority": "high",
+      "status": "done",
+      "dueDate": "2025-04-20",
+      "labels": [{ "name": "GraphQL", "color": "#e10098" }]
+    },
+    {
+      "title": "Redis caching layer",
+      "description": "Cache user profiles with 5-min TTL",
+      "board": "API Tasks",
+      "list": "In Progress",
+      "createdBy": "ravi@taskflow.dev",
+      "assignees": ["james@taskflow.dev"],
+      "priority": "high",
+      "status": "in-progress",
+      "dueDate": "2025-06-15",
+      "labels": [{ "name": "Performance", "color": "#f59e0b" }],
+      "checklist": [
+        { "title": "Redis connection", "isCompleted": true },
+        { "title": "Cache invalidation", "isCompleted": false }
+      ]
+    },
+    {
+      "title": "Rate limiting per API key",
+      "description": "Free: 100/hr, Pro: 1000/hr, Enterprise: unlimited",
+      "board": "API Tasks",
+      "list": "To Do",
+      "createdBy": "ashfaq@taskflow.dev",
+      "assignees": ["ravi@taskflow.dev"],
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": "2025-06-25",
+      "labels": [{ "name": "Security", "color": "#ef4444" }]
+    }
+  ]
+}

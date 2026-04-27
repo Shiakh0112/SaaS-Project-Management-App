@@ -48,8 +48,8 @@ const ListColumn = ({ list, tasks, boardId, projectId }) => {
   };
 
   return (
-    <div className="flex-shrink-0 w-72">
-      <div className={`bg-gray-100 dark:bg-gray-800/60 rounded-2xl flex flex-col max-h-full transition-colors ${isOver ? 'bg-primary-50 dark:bg-primary-900/20 ring-2 ring-primary-400' : ''}`}>
+    <div className="flex-shrink-0 w-72 h-full">
+      <div className={`bg-gray-100 dark:bg-gray-800/60 rounded-2xl flex flex-col h-full max-h-full transition-colors ${isOver ? 'bg-primary-50 dark:bg-primary-900/20 ring-2 ring-primary-400' : ''}`}>
         {/* Header */}
         <div className="flex items-center justify-between px-3 py-3">
           {editingName ? (

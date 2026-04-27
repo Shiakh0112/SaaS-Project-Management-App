@@ -119,7 +119,7 @@ const BoardPage = () => {
   const allLists = displayLists;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       {/* Board header */}
       <div
         className="flex items-center justify-between px-6 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
@@ -143,14 +143,14 @@ const BoardPage = () => {
       </div>
 
       {/* Board content */}
-      <div className="flex-1 overflow-x-auto overflow-y-hidden">
+      <div className="flex-1 overflow-x-auto overflow-y-hidden min-h-0">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex gap-4 p-6 h-full items-start">
+          <div className="flex gap-4 p-6 h-full items-start min-w-max">
             {allLists.map((list) => (
               <ListColumn
                 key={list._id}

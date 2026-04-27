@@ -1,0 +1,440 @@
+====================================================
+  TASKFLOW — FAKE DATA SEED GUIDE
+====================================================
+
+Is guide mein step by step bataya gaya hai ki
+fake data kaise add karo apne project mein.
+
+----------------------------------------------------
+STEP 1 — seed.js file banao
+----------------------------------------------------
+
+backend/ folder mein ek naya file banao: seed.js
+Neeche diya hua poora code us file mein paste karo.
+
+
+====================================================
+  seed.js — POORA CODE
+====================================================
+
+require('dotenv').config();
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const User    = require('./src/models/User');
+const Team    = require('./src/models/Team');
+const Project = require('./src/models/Project');
+const Board   = require('./src/models/Board');
+const List    = require('./src/models/List');
+const Task    = require('./src/models/Task');
+
+const seed = async () => {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log('MongoDB connected');
+
+  // Purana seed data delete karo (dobara run karne pe duplicate na ho)
+  await User.deleteMany({ email: /@taskflow\.dev$/ });
+  await Team.deleteMany({ name: 'TaskFlow Engineering' });
+
+  // --------------------------------------------------
+  // 1. USERS — 5 fake users banao
+  // --------------------------------------------------
+  const pass = await bcrypt.hash('Password@123', 12);
+
+  const users = await User.insertMany([
+    {
+      name: 'Ashfaq Shaikh',
+      email: 'ashfaq@taskflow.dev',
+      password: pass,
+      isVerified: true,
+      role: 'admin',
+      subscription: { plan: 'enterprise', status: 'active' },
+    },
+    {
+      name: 'Sara Ahmed',
+      email: 'sara@taskflow.dev',
+      password: pass,
+      isVerified: true,
+      subscription: { plan: 'pro', status: 'active' },
+    },
+    {
+      name: 'Ravi Kumar',
+      email: 'ravi@taskflow.dev',
+      password: pass,
+      isVerified: true,
+      subscription: { plan: 'pro', status: 'active' },
+    },
+    {
+      name: 'Priya Sharma',
+      email: 'priya@taskflow.dev',
+      password: pass,
+      isVerified: true,
+      subscription: { plan: 'free', status: 'active' },
+    },
+    {
+      name: 'James Wilson',
+      email: 'james@taskflow.dev',
+      password: pass,
+      isVerified: true,
+      subscription: { plan: 'free', status: 'active' },
+    },
+  ]);
+
+  const [ashfaq, sara, ravi, priya, james] = users;
+  console.log('Users created');
+
+  // --------------------------------------------------
+  // 2. TEAM — 1 team banao
+  // --------------------------------------------------
+  const team = await Team.create({
+    name: 'TaskFlow Engineering',
+    description: 'Core product engineering team',
+    owner: ashfaq._id,
+    slug: 'taskflow-engineering-' + Date.now(),
+    members: [
+      { user: ashfaq._id, role: 'owner'  },
+      { user: sara._id,   role: 'admin'  },
+      { user: ravi._id,   role: 'member' },
+      { user: priya._id,  role: 'member' },
+      { user: james._id,  role: 'viewer' },
+    ],
+  });
+  console.log('Team created');
+
+  // --------------------------------------------------
+  // 3. PROJECTS — 3 projects banao
+  // --------------------------------------------------
+  const [p1, p2, p3] = await Project.insertMany([
+    {
+      name: 'Website Redesign',
+      description: 'Complete overhaul of the marketing website',
+      color: '#6366f1',
+      team: team._id,
+      owner: ashfaq._id,
+      members: [ashfaq._id, sara._id, ravi._id],
+      status: 'active',
+      visibility: 'team',
+      dueDate: new Date('2025-06-30'),
+    },
+    {
+      name: 'Mobile App v2.0',
+      description: 'React Native app with offline support',
+      color: '#10b981',
+      team: team._id,
+      owner: sara._id,
+      members: [sara._id, ravi._id, priya._id],
+      status: 'active',
+      visibility: 'team',
+      dueDate: new Date('2025-08-15'),
+    },
+    {
+      name: 'API Gateway Migration',
+      description: 'Migrate from REST to GraphQL',
+      color: '#f59e0b',
+      team: team._id,
+      owner: ravi._id,
+      members: [ravi._id, ashfaq._id, james._id],
+      status: 'active',
+      visibility: 'team',
+      dueDate: new Date('2025-07-01'),
+    },
+  ]);
+  console.log('Projects created');
+
+  // --------------------------------------------------
+  // 4. BOARDS — har project ke liye boards
+  // --------------------------------------------------
+  const [b1, b2, b3, b4] = await Board.insertMany([
+    { name: 'Sprint 1 — Design', project: p1._id, createdBy: ashfaq._id, background: '#6366f1' },
+    { name: 'Sprint 2 — Dev',    project: p1._id, createdBy: ashfaq._id, background: '#8b5cf6' },
+    { name: 'Mobile Features',   project: p2._id, createdBy: sara._id,   background: '#10b981' },
+    { name: 'API Tasks',         project: p3._id, createdBy: ravi._id,   background: '#f59e0b' },
+  ]);
+  console.log('Boards created');
+
+  // --------------------------------------------------
+  // 5. LISTS (columns) — har board ke liye columns
+  // --------------------------------------------------
+  const allLists = await List.insertMany([
+    { name: 'Backlog',     board: b1._id, position: 0 },
+    { name: 'In Progress', board: b1._id, position: 1 },
+    { name: 'Review',      board: b1._id, position: 2 },
+    { name: 'Done',        board: b1._id, position: 3 },
+
+    { name: 'To Do',       board: b2._id, position: 0 },
+    { name: 'In Progress', board: b2._id, position: 1 },
+    { name: 'Done',        board: b2._id, position: 2 },
+
+    { name: 'Planned',     board: b3._id, position: 0 },
+    { name: 'In Progress', board: b3._id, position: 1 },
+    { name: 'Testing',     board: b3._id, position: 2 },
+    { name: 'Released',    board: b3._id, position: 3 },
+
+    { name: 'To Do',       board: b4._id, position: 0 },
+    { name: 'In Progress', board: b4._id, position: 1 },
+    { name: 'Done',        board: b4._id, position: 2 },
+  ]);
+  console.log('Lists created');
+
+  // Helper — board aur name se list dhundo
+  const L = (board, name) =>
+    allLists.find(l => l.board.equals(board._id) && l.name === name);
+
+  // --------------------------------------------------
+  // 6. TASKS — 13 tasks banao
+  // --------------------------------------------------
+  await Task.insertMany([
+    {
+      title: 'Design homepage hero section',
+      description: 'Figma mockups with new brand colors',
+      list: L(b1, 'Done')._id, board: b1._id, project: p1._id,
+      createdBy: ashfaq._id, assignees: [sara._id],
+      position: 0, priority: 'high', status: 'done',
+      dueDate: new Date('2025-05-10'),
+      labels: [{ name: 'Design', color: '#6366f1' }],
+      checklist: [
+        { title: 'Desktop mockup', isCompleted: true },
+        { title: 'Mobile mockup',  isCompleted: true },
+      ],
+      comments: [{ user: ashfaq._id, content: 'Approved for dev handoff!' }],
+    },
+    {
+      title: 'Build responsive navbar',
+      description: 'Sticky navbar with mobile hamburger menu',
+      list: L(b1, 'In Progress')._id, board: b1._id, project: p1._id,
+      createdBy: ashfaq._id, assignees: [ravi._id],
+      position: 0, priority: 'high', status: 'in-progress',
+      dueDate: new Date('2025-05-20'),
+      labels: [{ name: 'Frontend', color: '#10b981' }],
+      checklist: [
+        { title: 'Desktop layout',      isCompleted: true  },
+        { title: 'Mobile layout',       isCompleted: false },
+        { title: 'Accessibility audit', isCompleted: false },
+      ],
+    },
+    {
+      title: 'SEO meta tags setup',
+      description: 'Add OG images and structured data',
+      list: L(b1, 'Backlog')._id, board: b1._id, project: p1._id,
+      createdBy: sara._id, assignees: [priya._id],
+      position: 0, priority: 'medium', status: 'todo',
+      dueDate: new Date('2025-06-01'),
+      labels: [{ name: 'SEO', color: '#f59e0b' }],
+    },
+    {
+      title: 'Google Analytics 4 integration',
+      description: 'Custom events for CTA clicks and form submissions',
+      list: L(b1, 'Review')._id, board: b1._id, project: p1._id,
+      createdBy: ashfaq._id, assignees: [ashfaq._id],
+      position: 0, priority: 'medium', status: 'review',
+      dueDate: new Date('2025-05-25'),
+      labels: [{ name: 'Analytics', color: '#ec4899' }],
+      comments: [{ user: sara._id, content: 'Add conversion tracking for pricing page too.' }],
+    },
+    {
+      title: 'Pricing page with plan comparison',
+      description: 'Monthly/yearly toggle with Stripe checkout',
+      list: L(b2, 'In Progress')._id, board: b2._id, project: p1._id,
+      createdBy: sara._id, assignees: [sara._id, ravi._id],
+      position: 0, priority: 'urgent', status: 'in-progress',
+      dueDate: new Date('2025-05-28'),
+      labels: [{ name: 'Frontend', color: '#10b981' }, { name: 'Stripe', color: '#635bff' }],
+      checklist: [
+        { title: 'Toggle UI',              isCompleted: true  },
+        { title: 'Comparison table',       isCompleted: true  },
+        { title: 'Stripe checkout',        isCompleted: false },
+      ],
+    },
+    {
+      title: 'Blog section with MDX',
+      description: 'MDX rendering with syntax highlighting and RSS',
+      list: L(b2, 'To Do')._id, board: b2._id, project: p1._id,
+      createdBy: ashfaq._id, assignees: [priya._id],
+      position: 0, priority: 'low', status: 'todo',
+      dueDate: new Date('2025-06-20'),
+      labels: [{ name: 'Content', color: '#14b8a6' }],
+    },
+    {
+      title: 'Offline task sync with AsyncStorage',
+      description: 'Cache tasks and sync when connection restores',
+      list: L(b3, 'In Progress')._id, board: b3._id, project: p2._id,
+      createdBy: sara._id, assignees: [ravi._id],
+      position: 0, priority: 'urgent', status: 'in-progress',
+      dueDate: new Date('2025-06-10'),
+      labels: [{ name: 'Mobile', color: '#6366f1' }],
+      checklist: [
+        { title: 'AsyncStorage setup',    isCompleted: true  },
+        { title: 'Sync queue',            isCompleted: false },
+        { title: 'Conflict resolution',   isCompleted: false },
+      ],
+    },
+    {
+      title: 'Push notifications with Firebase FCM',
+      description: 'Task assignment and due date reminders',
+      list: L(b3, 'Testing')._id, board: b3._id, project: p2._id,
+      createdBy: sara._id, assignees: [sara._id, priya._id],
+      position: 0, priority: 'high', status: 'review',
+      dueDate: new Date('2025-06-05'),
+      labels: [{ name: 'Firebase', color: '#f59e0b' }],
+      comments: [
+        { user: ravi._id, content: 'Test iOS permissions on real device.' },
+        { user: sara._id, content: 'Will test on iPhone 15 tomorrow.' },
+      ],
+    },
+    {
+      title: 'Biometric authentication',
+      description: 'Face ID / Fingerprint using expo-local-authentication',
+      list: L(b3, 'Planned')._id, board: b3._id, project: p2._id,
+      createdBy: priya._id, assignees: [priya._id],
+      position: 0, priority: 'medium', status: 'todo',
+      dueDate: new Date('2025-07-15'),
+      labels: [{ name: 'Security', color: '#ef4444' }],
+    },
+    {
+      title: 'App Store & Play Store submission',
+      description: 'Screenshots, descriptions, and v2.0 submission',
+      list: L(b3, 'Released')._id, board: b3._id, project: p2._id,
+      createdBy: sara._id, assignees: [sara._id],
+      position: 0, priority: 'high', status: 'done',
+      dueDate: new Date('2025-05-01'),
+      labels: [{ name: 'Release', color: '#10b981' }],
+      checklist: [
+        { title: 'App Store screenshots', isCompleted: true },
+        { title: 'Play Store listing',    isCompleted: true },
+        { title: 'Privacy policy update', isCompleted: true },
+      ],
+    },
+    {
+      title: 'GraphQL schema design',
+      description: 'Types, queries, mutations for User, Project, Task, Team',
+      list: L(b4, 'Done')._id, board: b4._id, project: p3._id,
+      createdBy: ravi._id, assignees: [ravi._id, ashfaq._id],
+      position: 0, priority: 'high', status: 'done',
+      dueDate: new Date('2025-04-20'),
+      labels: [{ name: 'GraphQL', color: '#e10098' }],
+    },
+    {
+      title: 'Redis caching layer',
+      description: 'Cache user profiles and board data with 5-min TTL',
+      list: L(b4, 'In Progress')._id, board: b4._id, project: p3._id,
+      createdBy: ravi._id, assignees: [james._id],
+      position: 0, priority: 'high', status: 'in-progress',
+      dueDate: new Date('2025-06-15'),
+      labels: [{ name: 'Performance', color: '#f59e0b' }],
+      checklist: [
+        { title: 'Redis connection',        isCompleted: true  },
+        { title: 'Cache middleware',         isCompleted: true  },
+        { title: 'Cache invalidation',       isCompleted: false },
+      ],
+      comments: [{ user: ashfaq._id, content: 'Namespace cache keys per user to avoid leaks.' }],
+    },
+    {
+      title: 'Rate limiting per API key',
+      description: 'Free: 100/hr, Pro: 1000/hr, Enterprise: unlimited',
+      list: L(b4, 'To Do')._id, board: b4._id, project: p3._id,
+      createdBy: ashfaq._id, assignees: [ravi._id],
+      position: 0, priority: 'medium', status: 'todo',
+      dueDate: new Date('2025-06-25'),
+      labels: [{ name: 'Security', color: '#ef4444' }],
+    },
+  ]);
+  console.log('Tasks created');
+
+  console.log('\n SEED COMPLETE!');
+  console.log('Login password for all users: Password@123');
+  console.log('Emails:');
+  users.forEach(u => console.log('  ' + u.email));
+
+  await mongoose.disconnect();
+};
+
+seed().catch(err => {
+  console.error('Seed failed:', err.message);
+  process.exit(1);
+});
+
+
+====================================================
+  STEP 2 — seed.js run karo
+====================================================
+
+Terminal mein backend folder mein jao aur ye command chalaao:
+
+  node seed.js
+
+Output aisa dikhega:
+  MongoDB connected
+  Users created
+  Team created
+  Projects created
+  Boards created
+  Lists created
+  Tasks created
+  SEED COMPLETE!
+  Login password for all users: Password@123
+
+
+====================================================
+  STEP 3 — Login karo
+====================================================
+
+Kisi bhi user se login kar sakte ho:
+
+  Email:    ashfaq@taskflow.dev   (admin, enterprise plan)
+  Email:    sara@taskflow.dev     (pro plan)
+  Email:    ravi@taskflow.dev     (pro plan)
+  Email:    priya@taskflow.dev    (free plan)
+  Email:    james@taskflow.dev    (free plan)
+
+  Password: Password@123  (sabka ek hi password)
+
+
+====================================================
+  DATA SUMMARY — Kya kya banega
+====================================================
+
+  5  Users
+  1  Team   (TaskFlow Engineering)
+  3  Projects
+       - Website Redesign
+       - Mobile App v2.0
+       - API Gateway Migration
+  4  Boards
+       - Sprint 1 Design  (Website)
+       - Sprint 2 Dev     (Website)
+       - Mobile Features  (Mobile App)
+       - API Tasks        (API Gateway)
+  14 Lists  (columns — Backlog, In Progress, Review, Done etc.)
+  13 Tasks  (with priorities, labels, checklists, comments)
+
+
+====================================================
+  DOBARA RUN KARNA
+====================================================
+
+Agar dobara seed karna ho toh seedhi command chalaao:
+
+  node seed.js
+
+Script pehle purana data delete karti hai
+(@taskflow.dev emails wale users aur team),
+phir fresh data insert karti hai.
+Isliye duplicate nahi hoga.
+
+
+====================================================
+  PRODUCTION (Render) PE SEED KARNA
+====================================================
+
+Agar live server pe data chahiye toh:
+
+1. Render dashboard pe jao
+2. Backend service open karo
+3. "Shell" tab pe click karo
+4. Ye command chalaao:
+     node seed.js
+
+Ya phir locally run karo — MONGO_URI same Atlas
+database point karta hai toh data wahan bhi jayega.
+
+====================================================
