@@ -14,7 +14,7 @@
 **A full-stack, production-grade SaaS Project Management platform inspired by Notion + Trello.**  
 Built with real-world architecture — JWT auth, real-time collaboration, Stripe payments, role-based access, and cloud file uploads.
 
-[Live Demo](https://saa-s-project-management-app.vercel.app) · [API Docs](#api-endpoints) · [Report Bug](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues) · [Request Feature](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues)
+[Live Demo](https://saa-s-project-management-app-cigz.vercel.app) · [API Docs](#api-endpoints) · [Report Bug](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues) · [Request Feature](https://github.com/Shiakh0112/SaaS-Project-Management-App/issues)
 
 </div>
 
@@ -514,7 +514,7 @@ Live demo pe test karne ke liye ye credentials use karo:
 
 | Service | URL |
 |---------|-----|
-| Frontend (Vercel) | https://saa-s-project-management-app.vercel.app |
+| Frontend (Vercel) | https://saa-s-project-management-app-cigz.vercel.app |
 | Backend (Render) | https://saas-project-management-app.onrender.com |
 | Repository | https://github.com/Shiakh0112/SaaS-Project-Management-App |
 
@@ -546,7 +546,7 @@ MIT License — feel free to use this project for learning, portfolio, or as a b
 Built with passion by **Ashfaq Shaikh**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/Shiakh0112/SaaS-Project-Management-App)
-[![Live Demo](https://img.shields.io/badge/Live-Demo-6366f1?style=flat-square&logo=vercel)](https://saa-s-project-management-app.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-6366f1?style=flat-square&logo=vercel)](https://saa-s-project-management-app-cigz.vercel.app)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/yourusername)
 
 ⭐ **Star this repo if you found it helpful!**
