@@ -494,6 +494,22 @@ All real-time events are powered by **Socket.io** with JWT authentication on the
 
 ---
 
+## Demo Credentials
+
+Live demo pe test karne ke liye ye credentials use karo:
+
+| Name | Email | Password | Plan |
+|------|-------|----------|------|
+| Ashfaq Shaikh | ashfaq@taskflow.dev | Password@123 | Enterprise |
+| Sara Ahmed | sara@taskflow.dev | Password@123 | Pro |
+| Ravi Kumar | ravi@taskflow.dev | Password@123 | Pro |
+| Priya Sharma | priya@taskflow.dev | Password@123 | Free |
+| James Wilson | james@taskflow.dev | Password@123 | Free |
+
+> All accounts are pre-verified. No OTP required.
+
+---
+
 ## Deployment
 
 | Service | URL |
